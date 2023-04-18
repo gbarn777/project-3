@@ -59,7 +59,10 @@ def get_movies():
             'vote_count': row[8],
             'director': row[9],
             'dir_gender': row[10],
-            'dir_popularity': row[11]
+            'dir_popularity': row[11],
+            'certification': row[12],
+            'runtime': row[13],
+            'movie_popularity': row[14]
         })
                 
 
