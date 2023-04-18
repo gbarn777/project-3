@@ -67,11 +67,21 @@ function createPlot() {
         x: xData,
         y: yData,
         name: genre,
-        type: 'scatter'
+        type: 'bar'
       };
     });
 
+    // Set the layout for the plot
+    const layout = {
+      xaxis: {
+        title: 'Release Year'
+      },
+      yaxis: {
+        title: 'No of Movies by Genre'
+      }
+    };
+
     // Create the plot
-    Plotly.newPlot('plot', traces);
+    Plotly.newPlot('plot', traces, layout);
 }
 
