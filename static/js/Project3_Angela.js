@@ -1,66 +1,136 @@
-// Mapping Budget vs Revenue by Certification using Highcharts library
-// To use Highcharts, the highcharts.js file must be included in the server and referred to in the HTML file
-// https://www.highcharts.com/docs/index
+// declare the URL
+const url = "http://localhost:5000/api/movies"
 
-// Filter out films with certification "Not Avail"
-let filteredFilms = films.filter(film => film.certification !== 'NOT AVAIL');
+// Using D3, fetch the data 
+d3.json(url, function(data) {
+  // Filter out films with certification "Not Avail"
+  let filteredFilms = data.filter(film => film.certification !== 'NOT AVAIL');
 
-// Start by creating an empty object to store the data
-let data = {};
+  // Create an empty object to store the data
+  let data1 = {};
 
-// Loop through the filteredFilms array and extract the required data
-for (let i = 0; i < filteredFilms.length; i++) {
-  let film = filteredFilms[i];
-  let certification = film.certification;
-  if (!(certification in data)) {
-    data[certification] = {
-      budget: [],
-      revenue: []
-    };
-  }
-  data[certification].budget.push(film.budget);
-  data[certification].revenue.push(film.revenue);
-}
-
-// Calculate the average revenue and budget for each certification group
-let categories = Object.keys(data);
-let budget_data = [];
-let revenue_data = [];
-for (let i = 0; i < categories.length; i++) {
-  let certification = categories[i];
-  let budget_avg = data[certification].budget.reduce((a, b) => a + b, 0) / data[certification].budget.length;
-  let revenue_avg = data[certification].revenue.reduce((a, b) => a + b, 0) / data[certification].revenue.length;
-  budget_data.push(budget_avg);
-  revenue_data.push(revenue_avg);
-}
-
-// Create the chart using Highcharts
-let chart = Highcharts.chart('container_AN', {
-  chart: {
-    type: 'bar'
-  },
-  title: {
-    text: 'Avg. Box Office Revenue vs. Avg. Movie Budget by Certification Rating'
-  },
-  xAxis: {
-    categories: categories
-  },
-  yAxis: {
-    title: {
-      text: 'Dollars'
+  // Loop through the filteredFilms array and extract the required data
+  for (let i = 0; i < filteredFilms.length; i++) {
+    let film = filteredFilms[i];
+    let certification = film.certification;
+    if (!(certification in data1)) {
+      data1[certification] = {
+        budget: [],
+        revenue: []
+      };
     }
-  },
-  series: [{
-    name: 'Budget',
-    data: budget_data
-  }, {
-    name: 'Revenue',
-    data: revenue_data
-  }]
+    data1[certification].budget.push(film.budget);
+    data1[certification].revenue.push(film.revenue);
+  }
+
+  // Calculate the average revenue and budget for each certification group
+  let categories = Object.keys(data1);
+  let budget_data = [];
+  let revenue_data = [];
+  for (let i = 0; i < categories.length; i++) {
+    let certification = categories[i];
+    let budget_avg = data1[certification].budget.reduce((a, b) => a + b, 0) / data1[certification].budget.length;
+    let revenue_avg = data1[certification].revenue.reduce((a, b) => a + b, 0) / data1[certification].revenue.length;
+    budget_data.push(budget_avg);
+    revenue_data.push(revenue_avg);
+  }
+
+  // Use the filtered, extracted, and aggregated data here
+  console.log(filteredFilms);
+  console.log(data1);
+  console.log(budget_data);
+  console.log(revenue_data);
+
+  // Mapping Budget vs Revenue by Certification using Highcharts library
+  // To use Highcharts, the highcharts.js file must be included in the server and referred to in the HTML file
+  // https://www.highcharts.com/docs/index
+  let chart = Highcharts.chart('container_AN', {
+    chart: {
+      type: 'bar'
+    },
+    title: {
+      text: 'Avg. Box Office Revenue vs. Avg. Movie Budget by Certification Rating'
+    },
+    xAxis: {
+      categories: categories
+    },
+    yAxis: {
+      title: {
+        text: 'Dollars'
+      }
+    },
+    series: [{
+      name: 'Budget',
+      data: budget_data
+    }, {
+      name: 'Revenue',
+      data: revenue_data
+    }]
+  });
 });
 
-// ------------------------------------------------------------
-// ------------------------------------------------------------
+// ----------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------
+// The below code is the same as above but uses films.js file as a data source instead of the API
+// Filter out films with certification "Not Avail"
+// let filteredFilms = films.filter(film => film.certification !== 'NOT AVAIL');
+
+// // Start by creating an empty object to store the data
+// let data = {};
+
+// // Loop through the filteredFilms array and extract the required data
+// for (let i = 0; i < filteredFilms.length; i++) {
+//   let film = filteredFilms[i];
+//   let certification = film.certification;
+//   if (!(certification in data)) {
+//     data[certification] = {
+//       budget: [],
+//       revenue: []
+//     };
+//   }
+//   data[certification].budget.push(film.budget);
+//   data[certification].revenue.push(film.revenue);
+// }
+
+// // Calculate the average revenue and budget for each certification group
+// let categories = Object.keys(data);
+// let budget_data = [];
+// let revenue_data = [];
+// for (let i = 0; i < categories.length; i++) {
+//   let certification = categories[i];
+//   let budget_avg = data[certification].budget.reduce((a, b) => a + b, 0) / data[certification].budget.length;
+//   let revenue_avg = data[certification].revenue.reduce((a, b) => a + b, 0) / data[certification].revenue.length;
+//   budget_data.push(budget_avg);
+//   revenue_data.push(revenue_avg);
+// }
+
+// // Create the chart using Highcharts
+// let chart = Highcharts.chart('container_AN', {
+//   chart: {
+//     type: 'bar'
+//   },
+//   title: {
+//     text: 'Avg. Box Office Revenue vs. Avg. Movie Budget by Certification Rating'
+//   },
+//   xAxis: {
+//     categories: categories
+//   },
+//   yAxis: {
+//     title: {
+//       text: 'Dollars'
+//     }
+//   },
+//   series: [{
+//     name: 'Budget',
+//     data: budget_data
+//   }, {
+//     name: 'Revenue',
+//     data: revenue_data
+//   }]
+// });
+
+// ----------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------
 // Create another chart using c3 library for Revenue vs Rating Over Time  
 // Start by creating an empty array to store the data
 let data2 = [];
@@ -138,8 +208,8 @@ let chart2 = c3.generate({
   }
 });
 
-// ------------------------------------------------------------
-// ------------------------------------------------------------
+// ----------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------
 // Create a bubble chart using Plotly show to budget vs revenue by Movie Popularity/Rating
 const bubbleData = [{
     x: films.map(film => film.revenue), // x-axis: release dates
