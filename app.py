@@ -14,19 +14,19 @@ def directors():
 
 @app.route('/angela')
 def certification():
-    return render_template("directors.html")
+    return render_template("certification.html")
 
 @app.route('/darya')
 def revenue():
-    return render_template("directors.html")
+    return render_template("revenue.html")
 
 @app.route('/crisaldry')
 def language():
-    return render_template("directors.html")
+    return render_template("language.html")
 
 @app.route('/miguel')
 def genre():
-    return render_template("directors.html")
+    return render_template("genre.html")
 
 
 @app.route('/api/movies')
