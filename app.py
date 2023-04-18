@@ -61,14 +61,15 @@ def get_movies():
             'dir_gender': row[10],
             'dir_popularity': row[11]
         })
-        
-        # id,title,genre,language,release_date,budget,revenue,rating,vote_count
+                
 
     # Close the connection
     conn.close()
 
-    # Return the results as JSON
-    return jsonify(result)
+    # Return the results as JSON    
+    response=jsonify(result)
+    response.headers.add("Access-Control-Allow-Origin", "*")
+    return response
 
 #My addition
 
@@ -80,8 +81,7 @@ def get_directors():
     # Create a cursor object
     c = conn.cursor()
 
-    # Execute a SELECT statement on the movies table
-    # We can join the two tables below using the SQL script
+    # Execute a SELECT statement on the movies table    
     c.execute('SELECT title, director, revenue FROM movies')
 
     # Fetch all the rows in the result set
@@ -99,8 +99,10 @@ def get_directors():
     # Close the connection
     conn.close()
 
-    # Return the results as JSON
-    return jsonify(result)
+    # Return the results as JSON    
+    response=jsonify(result)
+    response.headers.add("Access-Control-Allow-Origin", "*")
+    return response
 
 if __name__ == '__main__':
     app.run(port=5000, debug=True)
