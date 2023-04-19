@@ -9,10 +9,11 @@ fetch('/api/directors')
   const labels = data.map(movie => movie.title);
   const directors = data.map(movie => movie.director);
   const revenues = data.map(movie => movie.revenue);
+  const release_date = data.map(movie => movie.release_date)
 
   // Create a data object for the chart
   const chartData = {
-    labels: labels,
+    labels: directors,
     datasets: [{
       label: 'Movies',
       data: revenues,
@@ -25,10 +26,17 @@ fetch('/api/directors')
   };
 
   // Create a chart using Chart.js
+  function optionYear(release_date) {
+    console.log("release_date=", release_date);
+    let year = data.release_date;
+    let resultArray = year.filter( yearObj => yearObj.release_date == sample);
+    let result = resultArray[0];
+    let director = result.directors;
+
   new Chart(document.getElementById('bubbleChart'), {
     type: 'bar',
     data: {
-      labels: labels,
+      labels: directors,
       datasets: [{
         label: 'Movies',
         data: data.map(movie => ({
@@ -62,7 +70,7 @@ fetch('/api/directors')
       }
     }
   });
-})
+}})
 .catch(error => console.error('Error fetching data:', error));
 
 console.log("movies-bubblechart.js")
@@ -106,81 +114,3 @@ fetch('/api/movies')
     })
 
 const tbody = d3.select("tbody");
-
-function optionYear(selected_yr) {
-  console.log("selected_yr=", selected_yr);
-
-  // Table view
-  tbody.html("");
-
-  const tbl_header = tbody.append("tr");
-  let header = tbl_header.append("th");
-  header.text("id");
-  header = tbl_header.append("th");
-  header.text("title");
-  header = tbl_header.append("th");
-  header.text("genre");
-  header = tbl_header.append("th");
-  header.text("language");
-  header = tbl_header.append("th");
-  header.text("release_date");
-  header = tbl_header.append("th");
-  header.text("budget");
-  header = tbl_header.append("th");
-  header.text("revenue");
-  header = tbl_header.append("th");
-  header.text("rating");
-  header = tbl_header.append("th");
-  header.text("vote_count");
-  header = tbl_header.append("th");
-  header.text("director");
-  header = tbl_header.append("th");
-  header.text("dir_gender");
-  header = tbl_header.append("th");
-  header.text("dir_popularity");
-
-  fetch('/api/movies')
-    .then(response => response.json())
-    .then(
-      data => {
-        
-        for (var i = 0; i < data.length; i++) {
-          date = data[i].release_date
-          year = 2000 + parseInt(date.split("/")[2])
-
-          const tbl_data = tbody.append("tr");
-
-          if (selected_yr == year) {
-            // console.log("data[i]")
-            // console.log(data[i])
-
-            let cell = tbl_data.append("td");
-            cell.text(data[i].id);
-            cell = tbl_data.append("td");
-            cell.text(data[i].title);
-            cell = tbl_data.append("td");
-            cell.text(data[i].genre);
-            cell = tbl_data.append("td");
-            cell.text(data[i].language);
-            cell = tbl_data.append("td");
-            cell.text(data[i].release_date);
-            cell = tbl_data.append("td");
-            cell.text(data[i].budget);
-            cell = tbl_data.append("td");
-            cell.text(data[i].revenue);
-            cell = tbl_data.append("td");
-            cell.text(data[i].rating);
-            cell = tbl_data.append("td");
-            cell.text(data[i].vote_count);
-            cell = tbl_data.append("td");
-            cell.text(data[i].director);
-            cell = tbl_data.append("td");
-            cell.text(data[i].dir_gender);
-            cell = tbl_data.append("td");
-            cell.text(data[i].dir_popularity);
-
-          }
-        }
-      })
-}
-
