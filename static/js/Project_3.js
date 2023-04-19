@@ -1,4 +1,3 @@
-console.log("Project_3")
 const url = "http://localhost:5000/api/movies"
 // Promise Pending
 function init() {
@@ -10,8 +9,8 @@ function init() {
           Plotly.newPlot("scatter",scatterdata,scatterlayout);
   }
   init();
-const dataPromise = d3.json(url);
-console.log("Data Promise: ", dataPromise);
+// const dataPromise = d3.json(url);
+// console.log("Data Promise: ", dataPromise);
 // Fetch the JSON data and console log it
 d3.json(url).then(function(data) {
   console.log(data);
