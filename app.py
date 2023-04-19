@@ -85,7 +85,7 @@ def get_directors():
     c = conn.cursor()
 
     # Execute a SELECT statement on the movies table    
-    c.execute('SELECT title, director, revenue FROM movies')
+    c.execute('SELECT title, director, release_date, revenue FROM movies')
 
     # Fetch all the rows in the result set
     rows = c.fetchall()
@@ -96,7 +96,8 @@ def get_directors():
         result.append({
             'title': row[0],
             'director': row[1],
-            'revenue': row[2]
+            'release_date': row[2],
+            'revenue': row[3]
         })
 
     # Close the connection
