@@ -6,6 +6,7 @@ d3.json(url).then(function(data) {
   console.log(data);
   processData(data);
   processData2(data);
+  processData3(data);
 }
 );
 
@@ -193,5 +194,57 @@ function createPlot2(data, genre) {
 
   // Create the plot
   Plotly.newPlot('plot2', traces, layout);
+}
+
+
+
+
+
+
+
+
+
+function processData3(data) {
+  var genres = ["Animation", "Drama", "Adventure", "Action", "Science Fiction", "Mystery", "Crime", "Fantasy", "Thriller", "Horror", "Comedy", "Documentary", "Romance", "Family", "Music", "War", "Western", "History", "TV Movie"];
+
+  // Create an object to store total revenue and movie count for each genre
+  var genreData = {};
+  genres.forEach(function(genre) {
+  genreData[genre] = {totalRevenue: 0, movieCount: 0};
+  });
+
+  // Calculate total revenue and movie count for each genre
+  data.forEach(function(movie) {
+    genreData[movie.genre].totalRevenue += movie.revenue;
+    genreData[movie.genre].movieCount += 1;
+  });
+
+// Calculate average revenue for each genre
+var avgRevenue = [];
+genres.forEach(function(genre) {
+  var revenue = genreData[genre].totalRevenue / genreData[genre].movieCount;
+  avgRevenue.push(revenue);
+});
+
+// Create a trace for the bar chart
+var trace = {
+ x: genres,
+ y: avgRevenue,
+ type: 'bar'
+};
+
+// Create a layout for the bar chart
+var layout = {
+ title: 'Average Revenue by Genre',
+ xaxis: {
+   title: 'Genre'
+ },
+ yaxis: {
+   title: 'Average Revenue'
+ }
+};
+
+// Create the bar chart
+Plotly.newPlot('plot3', [trace], layout);
 }
 
