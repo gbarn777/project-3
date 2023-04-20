@@ -108,5 +108,38 @@ def get_directors():
     response.headers.add("Access-Control-Allow-Origin", "*")
     return response
 
+@app.route('/api/languages')
+def get_languages():
+    # Establish a connection to the database
+    conn = sqlite3.connect('movies.db')
+
+    # Create a cursor object
+    c = conn.cursor()
+
+    # Execute a SELECT statement on the movies table
+    # We can join the two tables below using the SQL script
+    c.execute('SELECT title, language, revenue, release_date FROM movies')
+
+    # Fetch all the rows in the result set
+    rows = c.fetchall()
+
+    # Convert the results to a list of dictionaries
+    result = []
+    for row in rows:
+        result.append({
+            'title': row[0],
+            'language': row[1],
+            'revenue': row[2],
+            'release_date': row[3]
+        })
+
+    # Close the connection
+    conn.close()
+
+    # Return the results as JSON    
+    response=jsonify(result)
+    response.headers.add("Access-Control-Allow-Origin", "*")
+    return response
+
 if __name__ == '__main__':
     app.run(port=5000, debug=True)
