@@ -1,19 +1,82 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
 <head>
- 
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Movie Box Office Revenue Analysis 2000 to 2022</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Open Sans', sans-serif;
+    }
+    .header {
+      background-color: #333;
+      color: white;
+      padding: 20px;
+      text-align: center;
+      font-size: 36px;
+    }
+    .footer {
+      background-color: #333;
+      color: white;
+      padding: 10px;
+      text-align: center;
+    }
+    .links {
+      margin-top: 20px;
+      text-align: center;
+    }
+    .links a {
+      display: inline-block;
+      margin: 10px;
+      padding: 10px 20px;
+      background-color: #333;
+      color: white;
+      text-decoration: none;
+      border-radius: 5px;
+    }
+    .links a:hover {
+      background-color: #555;
+    }
+  </style>
+  <link rel="shortcut icon" type="image/png" href="favicon.png"/>
 </head>
+
 <body> 
-  <a href="http://127.0.0.1:5000/grace">Go to Grace</a>
-  <br>
-  <a href="http://127.0.0.1:5000/angela">Go to Angela</a>
-  <br>
-  <a href="http://127.0.0.1:5000/darya">Go to Darya</a>
-  <br>
-  <a href="http://127.0.0.1:5000/crisaldry">Go to Crisaldry</a>
-  <br>
-  <a href="http://127.0.0.1:5000/miguel">Go to Miguel</a>
-</h1>
-</script>
+  <div class="header">
+    <h1>Box Office Revenue Analysis 2000 to 2022</h1>
+    <img src="/static/js/TMDB_logo.svg" alt="TMDB logo" style="max-width: 100px; position: absolute; top: 20px; right: 20px;">
+  </div>
+
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12 jumbotron text-center" style="background-color: #eee;">
+        <h2>Welcome!</h2>
+        <p>Choose a team member's page to view their analysis:</p>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-12 bg-light text-center">
+        <div>Dataset is from The Movie DB (TMDB)</div>
+      </div>
+    </div>
+
+    <div class="links">
+      <a href="http://127.0.0.1:5000/grace">Go to Grace</a>
+      <a href="http://127.0.0.1:5000/angela">Go to Angela</a>
+      <a href="http://127.0.0.1:5000/darya">Go to Darya</a>
+      <a href="http://127.0.0.1:5000/crisaldry">Go to Crisaldry</a>
+      <a href="http://127.0.0.1:5000/miguel">Go to Miguel</a>
+    </div>
+  </div>
+
+  <div class="footer">
+    <p>&copy; 2023 Movie Box Office Revenue Analysis Team</p>
+  </div>
+
 </body>
 </html>
