@@ -1,76 +1,132 @@
-console.log("data")
+let chartInstance;
+let originalData;
 
-// Fetch data from the API endpoint
-fetch('/api/directors')
-.then(response => response.json())
-.then(data => {
-  console.log(data)
-  // Extract data for the chart
-  const labels = data.map(movie => movie.title);
-  const directors = data.map(movie => movie.director);
-  const revenues = data.map(movie => movie.revenue);
-  const release_date = data.map(movie => movie.release_date)
-
-  // Create a data object for the chart
+function createChart(data) {
+  // Save the original data for filtering
+  originalData = data;
+  // Process the API data to match the format required by Chart.js
   const chartData = {
-    labels: directors,
-    datasets: [{
-      label: 'Movies',
-      data: data.map(movie => ({
-        x: movie.title,
-        y: movie.revenue,
-        r: 10 // Set bubble radius
-      })),
-
-      backgroundColor: 'rgba(75, 192, 192, 0.5)', // Set bubble background color
-      borderColor: 'rgba(75, 192, 192, 1)', // Set bubble border color
-      borderWidth: 1, // Set bubble border width
-      hoverRadius: 10, // Set hover radius for bubbles
-      hoverBorderWidth: 2 // Set hover border width for bubbles
-    }]
+    labels: data.map(item => item.title),
+    datasets: [
+      {
+        label: 'Revenue',
+        data: data.map(item => item.revenue),
+        borderColor: 'rgb(219, 112, 147)', // pinkish color
+        borderWidth: 1,
+        fill: false,
+      },
+    ],
   };
-
-  // Create a chart using Chart.js
-  new Chart(document.getElementById('bubbleChart'), {
-    type: 'bar',
+  // Get the canvas element and create a chart
+  const canvas = document.getElementById('bubbleChart');
+  const ctx = canvas.getContext('2d');
+  // Destroy the previous chart instance if it exists
+  if (chartInstance) {
+    chartInstance.destroy();
+  }
+  chartInstance = new Chart(ctx, {
+    type: 'line', // Line chart
     data: chartData,
     options: {
-      responsive: true,
       scales: {
         x: {
           title: {
             display: true,
-            text: 'Movie Title' // Set x-axis label
-          }
+            text: 'Title',
+          },
         },
         y: {
           title: {
             display: true,
-            text: 'Revenue' // Set y-axis label
-          }
-        }
-      }
-    }
+            text: 'Revenue',
+          },
+          beginAtZero: true,
+        },
+      },
+      plugins: {
+        tooltip: {
+          mode: 'nearest',
+          intersect: false,
+        },
+      },
+      elements: {
+        point: {
+          radius: 0,
+        },
+      },
+    },
   });
-})
-.catch(error => console.error('Error fetching data:', error));
+}
 
-console.log("directors.js")
+function updateChart(directors) {
+  let filteredData = originalData;
+  if (directors) {
+    filteredData = originalData.filter(item => item.directors === directors);
+  }
+  // Destroy the previous chart instance if it exists
+  if (chartInstance) {
+    chartInstance.destroy();
+  }
+  // Create a new chart instance with the filtered data
+  const chartData = {
+    labels: filteredData.map(item => item.title),
+    datasets: [
+      {
+        label: 'Revenue',
+        data: filteredData.map(item => item.revenue),
+        borderColor: 'rgb(219, 112, 147)', // pinkish color
+        borderWidth: 1,
+        fill: false,
+      },
+    ],
+  };
+  const canvas = document.getElementById('bubbleChart');
+  const ctx = canvas.getContext('2d');
+  chartInstance = new Chart(ctx, {
+    type: 'line',
+    data: chartData,
+    options: {
+      scales: {
+        x: {
+          title: {
+            display: true,
+            text: 'Title',
+          },
+        },
+        y: {
+          title: {
+            display: true,
+            text: 'Revenue',
+          },
+          beginAtZero: true,
+        },
+      },
+      plugins: {
+        tooltip: {
+          mode: 'nearest',
+          intersect: false,
+        },
+      },
+      elements: {
+        point: {
+          radius: 0,
+        },
+      },
+    },
+  });
+}
 
-var yearTag = d3.select('#selYear');
-
-// Add dropdown menu
 // Fetch data from the API and create the chart
-        fetch('/api/directors')
-          .then(response => response.json())
-          .then(data => {
-            createChart(data);
-            // Add an event listener to update the chart when the language selection changes
-            const directorSelector = document.getElementById('directorSelector');
-            Selector.addEventListener('change', event => {
-              updateChart(event.target.value);
-            });
-          })
-          .catch(error => {
-            console.error('Error fetching directors:', error);
-          });
+fetch('/api/directors')
+  .then(response => response.json())
+  .then(data => {
+    createChart(data);
+    // Add an event listener to update the chart when the director selection changes
+    const directorSelector = document.getElementById('directorSelector');
+    directorSelector.addEventListener('change', event => {
+      updateChart(event.target.value);
+    });
+  })
+  .catch(error => {
+    console.error('Error fetching directors:', error);
+  });
